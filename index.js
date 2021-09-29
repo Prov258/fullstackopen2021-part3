@@ -12,6 +12,22 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
+app.get('/info', (req, res, next) => {
+    Person.find({})
+        .then(persons => {
+            res.send(`
+                <div>
+                    Phonebook has info for ${persons.length} people
+                </div>
+                <br/>
+                <div>
+                    ${new Date()}
+                </div>
+            `)
+        })
+        .catch(error => next(error))
+})
+
 app.get('/api/persons', (req, res) => {
     Person
         .find({})
